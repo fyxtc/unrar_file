@@ -32,7 +32,7 @@ class UnrarFile {
     }
   }
 
-  static Future<List<String>?> listFiles(String filePath) async {
+  static Future<List<String>> listFiles(String filePath) async {
     try {
       List result = await _channel.invokeMethod('listFiles', {"file_path": filePath});
       print("unrar listFiles $result");
