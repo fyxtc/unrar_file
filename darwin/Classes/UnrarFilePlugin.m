@@ -36,8 +36,8 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
         NSLog(@"Archived file: %@", name);
     }
 
-    // 创建一个NSPredicate对象，过滤出包含'/'的字符串
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] '/'"];
+    // 过滤出包含'.'的字符串，去掉目录情况的名字，这里不考虑rar里面有文件夹且文件夹也包含'.'的情况
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] '.'"];
     // 使用predicate过滤filesInArchive数组
     NSArray<NSString*> *filteredFiles = [filesInArchive filteredArrayUsingPredicate:predicate];
     result(filteredFiles);
