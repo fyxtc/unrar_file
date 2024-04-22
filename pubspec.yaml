@@ -32,8 +32,10 @@ flutter:
         pluginClass: UnrarFilePlugin
       ios:
         pluginClass: UnrarFilePlugin
+        sharedDarwinSource: true
       macos:
         pluginClass: UnrarFilePlugin
+        sharedDarwinSource: true
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
