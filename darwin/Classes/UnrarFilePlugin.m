@@ -36,10 +36,10 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
     //     NSLog(@"Archived file: %@", name);
     // }
 
-    NSMutableArray<NSString*> *afFiles = [];
+    NSMutableArray<NSString*> *afFiles = [NSMutableArray array];
     NSArray<URKFileInfo*> *fileInfosInArchive = [archive listFileInfo:&error];
     for (URKFileInfo *info in fileInfosInArchive) {
-        NSLog(@"Archive name: %@ | File name: %@ | Size: %lld isDirectory: %d", info.archiveName, info.filename, info.uncompressedSize, info.isDirectory);
+        NSLog(@"Archive name: %@ | File name: %@ | Size: %lld isDirectory: %@", info.archiveName, info.filename, info.uncompressedSize, info.isDirectory ? @"YES" : @"NO");
         if(!info.isDirectory && info.uncompressedSize > 0) {
             [afFiles addObject:info.archiveName];
         }
