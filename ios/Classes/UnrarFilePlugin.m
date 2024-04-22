@@ -31,6 +31,18 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
         error:&error];
     
     result(NSStringFromBOOL(extractFilesSuccessful));
+  } else if ([@"listFiles" isEqualToString:call.method]) {
+    NSString* file_path = call.arguments[@"file_path"];
+    NSError *archiveError = nil;
+    URKArchive *archive = [[URKArchive alloc] initWithPath:file_path
+                                                 error:&archiveError];
+                                                 
+    NSError *error = nil;
+    NSArray<String*> *filesInArchive = [archive listFilenames:&error];
+    for (NSString *name in filesInArchive) {
+        NSLog(@"Archived file: %@", name);
+    }
+    result(filesInArchive);
   } else {
     result(FlutterMethodNotImplemented);
   }
