@@ -15,15 +15,15 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+  NSString* file_path = call.arguments[@"file_path"];
+  NSError *archiveError = nil;
+  NSError *error = nil;
   if ([@"extractRAR" isEqualToString:call.method]) {
-    NSString* file_path = call.arguments[@"file_path"];
     NSString* destination_path = call.arguments[@"destination_path"];
     NSString* password = call.arguments[@"password"];
-    NSError *archiveError = nil;
     URKArchive *archive = [[URKArchive alloc] initWithPath:file_path
                                                  error:&archiveError];
-    NSError *error = nil;
-      BOOL extractFilesSuccessful;
+    BOOL extractFilesSuccessful;
     if (archive.isPasswordProtected && password.length!=0) {
         archive.password = password;
     }
@@ -32,17 +32,27 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
     
     result(NSStringFromBOOL(extractFilesSuccessful));
   } else if ([@"listFiles" isEqualToString:call.method]) {
-    NSString* file_path = call.arguments[@"file_path"];
-    NSError *archiveError = nil;
     URKArchive *archive = [[URKArchive alloc] initWithPath:file_path
                                                  error:&archiveError];
                                                  
-    NSError *error = nil;
     NSArray<NSString*> *filesInArchive = [archive listFilenames:&error];
     for (NSString *name in filesInArchive) {
         NSLog(@"Archived file: %@", name);
     }
     result(filesInArchive);
+  } else if ([@"getAfBytes" isEqualToString:call.method]) {
+    NSString* afName = call.arguments[@"af_name"];
+    NSLog(@"getAfBytes file: %@", afName);
+    NSData *extractedData = [archive extractDataFromFile:afName
+                                               error:&error];
+    if (error) {
+      result([FlutterError errorWithCode:@"ERROR"
+                                   message:@"Failed to extract data"
+                                   details:error.localizedDescription]);
+    } else {
+        FlutterStandardTypedData *typedData = [FlutterStandardTypedData typedDataWithBytes:extractedData];
+        result(typedData);
+    }
   } else {
     result(FlutterMethodNotImplemented);
   }

@@ -43,4 +43,15 @@ class UnrarFile {
       throw e.message!;
     }
   }
+
+  static Future<Uint8List> getAfBytes(String filePath, String afName) async {
+    try {
+      Uint8List result =
+          await _channel.invokeMethod('getAfBytes', {"file_path": filePath, "af_name": afName});
+      print("getAfBytes ${result.length}");
+      return result;
+    } on PlatformException catch (e) {
+      throw e.message!;
+    }
+  }
 }
