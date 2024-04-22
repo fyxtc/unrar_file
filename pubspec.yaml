@@ -1,6 +1,6 @@
 name: unrar_file
 description: flutter wrapper around junrar library for extracting RAR files, in addition to that custom functionality to unrar RAR5(not supported by junrar).
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/syedecryptr/unrar_file
 
 environment:
