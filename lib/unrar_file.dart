@@ -35,8 +35,7 @@ class UnrarFile {
   static Future<List<String>?> listFiles(String filePath) async {
     try {
       List result = await _channel.invokeMethod('listFiles', {"file_path": filePath});
-      print("fuck rar");
-      print(result);
+      print("unrar listFiles $result");
       List<String> list = result.map((e) => e.toString()).toList();
       return list;
     } on PlatformException catch (e) {
@@ -48,7 +47,7 @@ class UnrarFile {
     try {
       Uint8List result =
           await _channel.invokeMethod('getAfBytes', {"file_path": filePath, "af_name": afName});
-      print("getAfBytes ${result.length}");
+      print("unrar getAfBytes ${result.length}");
       return result;
     } on PlatformException catch (e) {
       throw e.message!;
