@@ -31,11 +31,21 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
     
     result(NSStringFromBOOL(extractFilesSuccessful));
   } else if ([@"listFiles" isEqualToString:call.method]) {
-    NSArray<NSString*> *filesInArchive = [archive listFilenames:&error];
-    for (NSString *name in filesInArchive) {
-        NSLog(@"Archived file: %@", name);
+    // NSArray<NSString*> *filesInArchive = [archive listFilenames:&error];
+    // for (NSString *name in filesInArchive) {
+    //     NSLog(@"Archived file: %@", name);
+    // }
+
+    NSArray<NSString*> *afFiles = [];
+    NSArray<URKFileInfo*> *fileInfosInArchive = [archive listFileInfo:&error];
+    for (URKFileInfo *info in fileInfosInArchive) {
+        NSLog(@"Archive name: %@ | File name: %@ | Size: %lld isDirectory: %@", info.archiveName, info.filename, info.uncompressedSize, info.isDirectory);
+        if(!info.isDirectory && info.uncompressedSize > 0) {
+            [afFiles addObject:info.filename];
+        }
     }
-    result(filesInArchive);
+
+    result(afFiles);
   } else if ([@"getAfBytes" isEqualToString:call.method]) {
     NSString* afName = call.arguments[@"af_name"];
     NSLog(@"getAfBytes file: %@", afName);
