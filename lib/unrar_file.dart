@@ -32,10 +32,13 @@ class UnrarFile {
     }
   }
 
-  static Future<String?> listFiles(String filePath) async {
+  static Future<List<String>?> listFiles(String filePath) async {
     try {
-      var result = await _channel.invokeMethod('listFiles', {"file_path": filePath});
-      return result;
+      List result = await _channel.invokeMethod('listFiles', {"file_path": filePath});
+      print("fuck rar");
+      print(result);
+      List<String> list = result.map((e) => e.toString()).toList();
+      return list;
     } on PlatformException catch (e) {
       throw e.message!;
     }
