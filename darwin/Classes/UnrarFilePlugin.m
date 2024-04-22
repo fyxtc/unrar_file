@@ -41,7 +41,8 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
     for (URKFileInfo *info in fileInfosInArchive) {
         NSLog(@"Archive name: %@ | File name: %@ | Size: %lld isDirectory: %@", info.archiveName, info.filename, info.uncompressedSize, info.isDirectory ? @"YES" : @"NO");
         if(!info.isDirectory && info.uncompressedSize > 0) {
-            [afFiles addObject:info.archiveName];
+            // 确实要filename，因为有可能里面有多个文件夹，我需要文件夹名作为排序不同话的依据，而且getAfBytes也依赖
+            [afFiles addObject:info.filename];
         }
     }
 
