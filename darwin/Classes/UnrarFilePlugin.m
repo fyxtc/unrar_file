@@ -16,9 +16,9 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   NSString* file_path = call.arguments[@"file_path"];
-  URKArchive *archive = [[URKArchive alloc] initWithPath:file_path error:&archiveError];
   NSError *archiveError = nil;
   NSError *error = nil;
+  URKArchive *archive = [[URKArchive alloc] initWithPath:file_path error:&archiveError];
   if ([@"extractRAR" isEqualToString:call.method]) {
     NSString* destination_path = call.arguments[@"destination_path"];
     NSString* password = call.arguments[@"password"];
