@@ -38,7 +38,7 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
                                                  error:&archiveError];
                                                  
     NSError *error = nil;
-    NSArray<String*> *filesInArchive = [archive listFilenames:&error];
+    NSArray<NSString*> *filesInArchive = [archive listFilenames:&error];
     for (NSString *name in filesInArchive) {
         NSLog(@"Archived file: %@", name);
     }
