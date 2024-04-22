@@ -31,11 +31,18 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
     
     result(NSStringFromBOOL(extractFilesSuccessful));
   } else if ([@"listFiles" isEqualToString:call.method]) {
-    // NSArray<NSString*> *filesInArchive = [archive listFilenames:&error];
-    // for (NSString *name in filesInArchive) {
-    //     NSLog(@"Archived file: %@", name);
-    // }
+    NSArray<NSString*> *filesInArchive = [archive listFilenames:&error];
+    for (NSString *name in filesInArchive) {
+        NSLog(@"Archived file: %@", name);
+    }
 
+    // 创建一个NSPredicate对象，过滤出包含'/'的字符串
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF contains[c] '/'"];
+    // 使用predicate过滤filesInArchive数组
+    NSArray<NSString*> *filteredFiles = [filesInArchive filteredArrayUsingPredicate:predicate];
+    result(filteredFiles);
+
+    /*
     NSMutableArray<NSString*> *afFiles = [NSMutableArray array];
     NSArray<URKFileInfo*> *fileInfosInArchive = [archive listFileInfo:&error];
     for (URKFileInfo *info in fileInfosInArchive) {
@@ -45,8 +52,8 @@ static inline NSString* NSStringFromBOOL(BOOL aBool) {
             [afFiles addObject:info.filename];
         }
     }
-
     result(afFiles);
+    */
   } else if ([@"getAfBytes" isEqualToString:call.method]) {
     NSString* afName = call.arguments[@"af_name"];
     NSLog(@"getAfBytes file: %@", afName);
